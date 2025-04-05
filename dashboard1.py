@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import py3Dmol
 import pandas as pd
 
@@ -8,10 +9,17 @@ st.title("EGFR-Aptamer Interaction Dashboard")
 # 3D Viewer Section
 st.subheader("1. EGFR Protein Structure")
 pdb_id = "1M17"  # You can change this later
-view = py3Dmol.view(query=f"pdb:{pdb_id}")
-view.setStyle({'cartoon': {'color': 'spectrum'}})
-view.zoomTo()
-view.show()
+def render_pdb(pdb_id="1M17"):
+    view = py3Dmol.view(query=f"pdb:{pdb_id}")
+    view.setStyle({'cartoon': {'color': 'spectrum'}})
+    view.zoomTo()
+    return view
+
+st.subheader("1. EGFR Protein Structure Viewer")
+
+# Get the view and render it as HTML
+viewer = render_pdb()
+components.html(viewer._make_html(), height=500)
 
 # Aptamer Upload
 st.subheader("2. Upload Aptamer Sequence (FASTA)")
